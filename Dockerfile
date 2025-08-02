@@ -6,6 +6,7 @@ primary_region = "gru"
 
 [env]
   PORT = "8000"
+  HOST = "0.0.0.0"
 
 [[services]]
   internal_port = 8000
@@ -19,9 +20,21 @@ primary_region = "gru"
     handlers = ["tls", "http"]
     port = 443
 
-[machines]
-  cpus = 4         # Limita a 4 CPUs para evitar erro do Fly.io
-  memory = 2048    # 2GB RAM, ajuste conforme necessidade
+  [services.concurrency]
+    type = "connections"
+    hard_limit = 25
+    soft_limit = 20
 
-  # Quantidade de instâncias, opcional
+  [services.healthcheck]
+    interval = 10000     # 10s
+    timeout = 2000       # 2s
+    unhealthy_threshold = 3
+    healthy_threshold = 2
+    method = "GET"
+    path = "/"
+    protocol = "http"
+
+[machines]
+  cpus = 4
+  memory = 2048
   count = 2
