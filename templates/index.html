@@ -1,0 +1,28 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <title>EdgeNova</title>
+  <script src="/static/drawflow.min.js"></script>
+  <style>
+    body { font-family:sans-serif; background:#111; color:#fff; margin:0; }
+    #drawflow { height: 90vh; background: #222; }
+  </style>
+</head>
+<body>
+  <h1 style="padding:10px;">🌐 EdgeNova - Editor Visual</h1>
+  <div id="drawflow"></div>
+  <button onclick="save()">💾 Salvar</button>
+  <form method="post" action="/save" style="display:none;" id="flowform">
+    <textarea name="data" id="flowdata"></textarea>
+  </form>
+  <script>
+    const editor = new Drawflow(document.getElementById("drawflow"));
+    editor.start();
+
+    function save() {
+      document.getElementById("flowdata").value = JSON.stringify(editor.export().drawflow.Home.data || {});
+      document.getElementById("flowform").submit();
+    }
+  </script>
+</body>
+</html>
